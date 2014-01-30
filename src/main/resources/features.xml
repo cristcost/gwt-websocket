@@ -8,6 +8,7 @@
 	<feature name="gwtws" version="${project.version}">
 		
 		<feature dependency="true">jetty</feature>
+		<feature dependency="true">war</feature>
 		
 		<bundle start-level="60">mvn:com.google.gwt/gwt-servlet/${gwt.version}</bundle>
 

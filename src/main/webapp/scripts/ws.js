@@ -19,11 +19,14 @@ $(function() {
 	var ws = null;
 	$('#connect').click(
 			function() {
-				var location = 'ws://localhost:8080/ws';
-				ws = new WebSocket(location);
+				if (!wsurl) {
+					appendErrorMessage("No WebSocket url specified!");
+					return;
+				}
+				ws = new WebSocket(wsurl);
 				ws.onopen = function() {
 					appendClientMessage("Connected to server via WebSocket to "
-							+ location);
+							+ wsurl);
 				};
 				ws.onmessage = function(message) {
 					if (message.data) {

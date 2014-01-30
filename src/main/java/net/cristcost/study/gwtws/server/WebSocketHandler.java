@@ -21,18 +21,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * The Class WebSocketApp.
+ * The Class WebSocketHandler.
  */
-public class WebSocketApp implements WebSocket.OnTextMessage {
+public class WebSocketHandler implements WebSocket.OnTextMessage {
 
-  private static Logger logger = Logger.getLogger(WebSocketApp.class.getName());
+  private static Logger logger = Logger.getLogger(WebSocketHandler.class.getName());
 
   private Connection connection;
   private final SampleWebSocketServlet sampleWebSocketServlet;
 
-  private String lastData;
-
-  public WebSocketApp(SampleWebSocketServlet sampleWebSocketServlet) {
+  public WebSocketHandler(SampleWebSocketServlet sampleWebSocketServlet) {
     this.sampleWebSocketServlet = sampleWebSocketServlet;
   }
 

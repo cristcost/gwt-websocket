@@ -40,18 +40,18 @@ public class SampleWebSocketServlet extends WebSocketServlet {
   private static Logger logger = Logger.getLogger(SampleWebSocketServlet.class.getName());
 
   private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
-  private String lastData;
+  private String lastData = null;
 
-  private final Set<WebSocketApp> members = new CopyOnWriteArraySet<WebSocketApp>();
+  private final Set<WebSocketHandler> members = new CopyOnWriteArraySet<WebSocketHandler>();
 
-  public void add(WebSocketApp webSocketApp) {
+  public void add(WebSocketHandler webSocketHandler) {
     logger.log(Level.INFO, "Adding client");
-    members.add(webSocketApp);
+    members.add(webSocketHandler);
   }
 
   @Override
   public WebSocket doWebSocketConnect(HttpServletRequest request, String protocol) {
-    return new WebSocketApp(this);
+    return new WebSocketHandler(this);
   }
 
   @Override
@@ -60,7 +60,7 @@ public class SampleWebSocketServlet extends WebSocketServlet {
     executor.scheduleAtFixedRate(new Runnable() {
       @Override
       public void run() {
-        for (final WebSocketApp member : members) {
+        for (final WebSocketHandler member : members) {
           if (member.isOpen()) {
             if (lastData != null) {
               member.sendMessage("The last data was: " + lastData + " [Server time" + new Date()
@@ -74,9 +74,9 @@ public class SampleWebSocketServlet extends WebSocketServlet {
     }, 5, 5, TimeUnit.SECONDS);
   }
 
-  public void remove(WebSocketApp webSocketApp) {
+  public void remove(WebSocketHandler webSocketHandler) {
     logger.log(Level.INFO, "Removing client");
-    members.remove(webSocketApp);
+    members.remove(webSocketHandler);
   }
 
   public void setLastData(String data) {
