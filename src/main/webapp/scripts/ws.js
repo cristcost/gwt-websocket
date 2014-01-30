@@ -1,58 +1,56 @@
-if (!window.WebSocket)
-	alert("WebSocket not supported by this browser");
+$(function() {
+	var appendMessage = function(message, style) {
+		$('#messageList').append(
+				$('<li class="list-group-item ' + style + '">').html(message));
+	};
 
-function $() {
-	return document.getElementById(arguments[0]);
-}
-function $F() {
-	return document.getElementById(arguments[0]).value;
-}
+	var appendServerMessage = function(message) {
+		appendMessage(message, 'text-primary');
+	};
 
-function getKeyCode(ev) {
-	if (window.event)
-		return window.event.keyCode;
-	return ev.keyCode;
-}
+	var appendClientMessage = function(message) {
+		appendMessage(message, 'text-warning');
+	};
 
-var server = {
-	connect : function() {
-		var location = 'ws://localhost:8080/ws';
-		alert(location);
-		this._ws = new WebSocket(location);
-		this._ws.onopen = this._onopen;
-		this._ws.onmessage = this._onmessage;
-		this._ws.onclose = this._onclose;
-	},
+	var appendErrorMessage = function(message) {
+		appendMessage(message, 'text-danger');
+	};
 
-	_onopen : function() {
-		server._send('websockets are open for communications!');
-	},
+	var ws = null;
+	$('#connect').click(
+			function() {
+				var location = 'ws://localhost:8080/ws';
+				ws = new WebSocket(location);
+				ws.onopen = function() {
+					appendClientMessage("Connected to server via WebSocket to "
+							+ location);
+				};
+				ws.onmessage = function(message) {
+					if (message.data) {
+						appendServerMessage(message.data);
+					}
+				};
+				ws.onclose = function() {
+					ws = null;
+					appendServerMessage("Disconnected from server");
+				};
+			});
 
-	_send : function(message) {
-		if (this._ws)
-			this._ws.send(message);
-	},
-
-	send : function(text) {
-		if (text != null && text.length > 0)
-			server._send(text);
-	},
-
-	_onmessage : function(m) {
-		if (m.data) {
-			var messageBox = $('messageBox');
-			var spanText = document.createElement('span');
-			spanText.className = 'text';
-			spanText.innerHTML = m.data;
-			var lineBreak = document.createElement('br');
-			messageBox.appendChild(spanText);
-			messageBox.appendChild(lineBreak);
-			messageBox.scrollTop = messageBox.scrollHeight
-					- messageBox.clientHeight;
+	$('#send').click(function() {
+		var message = $('#intext').val();
+		if (ws) {
+			ws.send(message);
+		} else {
+			appendErrorMessage("Not connected, cannot send: " + message);
 		}
-	},
+	});
 
-	_onclose : function(m) {
-		this._ws = null;
-	}
-};
+	$('#disconnect').click(function() {
+		if (ws) {
+			appendClientMessage("Disconnecting");
+			ws.close();
+		} else {
+			appendErrorMessage("Not connected, can't disconnect");
+		}
+	});
+});

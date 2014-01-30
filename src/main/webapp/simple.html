@@ -6,6 +6,7 @@
 <title>Simple WebSocket test</title>
 <link href="styles/bootstrap.min.css" rel="stylesheet" media="screen">
 
+<script type="text/javascript" src="scripts/jquery.min.js"></script>
 <script type="text/javascript" src="scripts/ws.js"></script>
 
 </head>
@@ -15,27 +16,23 @@
 			<h1>Simple WebSocket test</h1>
 			<p>
 				Basic example inspired from <a
-					href="https://gist.github.com/manzke/1021982">the one of manzke</a> (thank you!)
+					href="https://gist.github.com/manzke/1021982">the one of manzke</a>
+				(thank you!)
 			</p>
 		</div>
 
 		<div class="row">
 			<div id="application" class="col-md-12">
-				<div id='messageBox'></div>
-				<div id='input'>
-					<div>
-						<input id='connect' class='button' type='submit' name='Connect'
-							value='Connect' />
-					</div>
-				</div>
-				<script type='text/javascript'>
-					$('connect').onclick = function(event) {
-						server.connect();
-						return false;
-					};
-				</script>
 
-				<p>This is a demonstration of the Jetty websocket server.</p>
+				<input type="text" id="intext" />
+
+				<button id="send">Send</button>
+
+				<button id="connect">Connect</button>
+				
+				<button id="disconnect">Disconnect</button>
+
+				<ul id="messageList" class="list-group"></ul>
 			</div>
 		</div>
 	</div>

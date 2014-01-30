@@ -17,46 +17,55 @@ package net.cristcost.study.gwtws.server;
 import org.eclipse.jetty.websocket.WebSocket;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * The Class WebSocketApp.
  */
 public class WebSocketApp implements WebSocket.OnTextMessage {
 
+  private static Logger logger = Logger.getLogger(WebSocketApp.class.getName());
+
   private Connection connection;
-  private SampleWebSocketServlet sampleWebSocketServlet;
+  private final SampleWebSocketServlet sampleWebSocketServlet;
+
+  private String lastData;
 
   public WebSocketApp(SampleWebSocketServlet sampleWebSocketServlet) {
     this.sampleWebSocketServlet = sampleWebSocketServlet;
+  }
+
+  public boolean isOpen() {
+    return connection.isOpen();
+  }
+
+  @Override
+  public void onClose(int closeCode, String message) {
+    logger.info("Closing WebSocket connection");
+    sampleWebSocketServlet.remove(this);
+  }
+
+  @Override
+  public void onMessage(String data) {
+    logger.info("Received: " + data);
+    sampleWebSocketServlet.setLastData(data);
   }
 
   @Override
   public void onOpen(Connection newConnection) {
     sampleWebSocketServlet.add(this);
     connection = newConnection;
+    logger.info("Opening WebSocket connection");
+    sendMessage("Server received Web Socket upgrade and added it to Receiver List.");
+  }
+
+  public void sendMessage(String message) {
     try {
-      connection.sendMessage("Server received Web Socket upgrade and added it to Receiver List.");
-    } catch (IOException e) {
-      e.printStackTrace();
+      connection.sendMessage(message);
+    } catch (final IOException e) {
+      logger.log(Level.WARNING, "Sending message to client", e);
     }
-  }
-
-  @Override
-  public void onClose(int closeCode, String message) {
-    sampleWebSocketServlet.remove(this);
-  }
-
-  @Override
-  public void onMessage(String data) {
-    System.out.println("Received: " + data);
-  }
-
-  public void sendMessage(String data) throws IOException {
-    connection.sendMessage(data);
-  }
-
-  public boolean isOpen() {
-    return connection.isOpen();
   }
 
 }

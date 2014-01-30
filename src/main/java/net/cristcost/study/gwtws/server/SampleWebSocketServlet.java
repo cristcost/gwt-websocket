@@ -24,6 +24,8 @@ import java.util.concurrent.CopyOnWriteArraySet;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -35,13 +37,21 @@ import javax.servlet.http.HttpServletResponse;
 @SuppressWarnings("serial")
 public class SampleWebSocketServlet extends WebSocketServlet {
 
+  private static Logger logger = Logger.getLogger(SampleWebSocketServlet.class.getName());
+
+  private final ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+  private String lastData;
+
   private final Set<WebSocketApp> members = new CopyOnWriteArraySet<WebSocketApp>();
-  private ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
+
+  public void add(WebSocketApp webSocketApp) {
+    logger.log(Level.INFO, "Adding client");
+    members.add(webSocketApp);
+  }
 
   @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException {
-    getServletContext().getNamedDispatcher("default").forward(request, response);
+  public WebSocket doWebSocketConnect(HttpServletRequest request, String protocol) {
+    return new WebSocketApp(this);
   }
 
   @Override
@@ -50,15 +60,13 @@ public class SampleWebSocketServlet extends WebSocketServlet {
     executor.scheduleAtFixedRate(new Runnable() {
       @Override
       public void run() {
-        System.out.println("Running Server Message Sending");
-        for (WebSocketApp member : members) {
-          System.out.println("Trying to send to Member!");
+        for (final WebSocketApp member : members) {
           if (member.isOpen()) {
-            System.out.println("Sending!");
-            try {
-              member.sendMessage("Sending a Message to you Guys! " + new Date() + "\n");
-            } catch (IOException e) {
-              e.printStackTrace();
+            if (lastData != null) {
+              member.sendMessage("The last data was: " + lastData + " [Server time" + new Date()
+                  + "]");
+            } else {
+              member.sendMessage("No data received yet [Server time" + new Date() + "]");
             }
           }
         }
@@ -66,16 +74,18 @@ public class SampleWebSocketServlet extends WebSocketServlet {
     }, 5, 5, TimeUnit.SECONDS);
   }
 
-  @Override
-  public WebSocket doWebSocketConnect(HttpServletRequest request, String protocol) {
-    return new WebSocketApp(this);
-  }
-
   public void remove(WebSocketApp webSocketApp) {
+    logger.log(Level.INFO, "Removing client");
     members.remove(webSocketApp);
   }
 
-  public void add(WebSocketApp webSocketApp) {
-    members.add(webSocketApp);
+  public void setLastData(String data) {
+    lastData = data;
+  }
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    throws ServletException, IOException {
+    getServletContext().getNamedDispatcher("default").forward(request, response);
   }
 }
