@@ -1,7 +1,7 @@
 package net.cristcost.launcher;
 
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.bio.SocketConnector;
+import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSocketConnector;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceCollection;
@@ -12,7 +12,11 @@ public class JettyStart {
   public static void main(String[] args) throws Exception {
 
     Server server = new Server();
-    SocketConnector connector = new SocketConnector();
+
+    // traditional blocking IO and threading model, used if NIO not available
+    // SocketConnector connector = new SocketConnector();
+    // efficient NIO buffers with a non-blocking threading model, required for WebSockets
+    SelectChannelConnector connector = new SelectChannelConnector();
 
     // Set some timeout options to make debugging easier.
     connector.setMaxIdleTime(3600000);

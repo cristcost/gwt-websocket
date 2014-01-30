@@ -1,14 +1,15 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<features name='springsec-${project.version}'>
+<features name='gwtws-${project.version}'>
 
-  <repository>mvn:org.apache.servicemix/apache-servicemix/${servicemix.version}/xml/features</repository>
-  <repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
-  
+	<repository>mvn:org.apache.servicemix/apache-servicemix/${servicemix.version}/xml/features</repository>
+	<repository>mvn:org.apache.camel.karaf/apache-camel/${camel.version}/xml/features</repository>
 
-  <feature name="gwtws" version="${project.version}">
-    
-	<bundle start-level="60">mvn:com.google.gwt/gwt-servlet/${gwt.version}</bundle>
 
-    <bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}/war</bundle>  
-  </feature>
+	<feature name="gwtws" version="${project.version}">
+
+		<!-- <bundle start-level="60">mvn:com.google.gwt/gwt-servlet/${gwt.version}</bundle> -->
+
+		<bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}/war
+		</bundle>
+	</feature>
 </features>
