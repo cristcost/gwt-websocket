@@ -3,6 +3,7 @@
   "http://google-web-toolkit.googlecode.com/svn/tags/2.5.1/distro-source/core/src/gwt-module.dtd">
 <module rename-to='wsstudy'>
 	<inherits name='com.google.gwt.user.User' />
+	<inherits name='com.google.gwt.websockets.WebSockets' />
 	<entry-point class='net.cristcost.study.gwtws.client.WebSocketStudy' />
 	<source path='client' />
 	<source path='shared' />
