@@ -5,7 +5,7 @@ import org.eclipse.jetty.server.nio.SelectChannelConnector;
 import org.eclipse.jetty.server.ssl.SslSocketConnector;
 import org.eclipse.jetty.util.resource.Resource;
 import org.eclipse.jetty.util.resource.ResourceCollection;
-import org.eclipse.jetty.util.ssl.SslContextFactory;
+//import org.eclipse.jetty.util.ssl.SslContextFactory;
 import org.eclipse.jetty.webapp.WebAppContext;
 
 public class JettyStart {
@@ -24,14 +24,10 @@ public class JettyStart {
     connector.setPort(8080);
     server.addConnector(connector);
 
+
+    /*
     Resource keystore = Resource.newClassPathResource("/keystore");
     if (keystore != null && keystore.exists()) {
-      // if a keystore for a SSL certificate is available, start a SSL
-      // connector on port 8443.
-      // By default, the quickstart comes with a Apache Wicket Quickstart
-      // Certificate that expires about half way september 2021. Do not
-      // use this certificate anywhere important as the passwords are
-      // available in the source.
 
       connector.setConfidentialPort(8443);
 
@@ -50,7 +46,8 @@ public class JettyStart {
       System.out.println("You can access the application using SSL on https://localhost:8443");
       System.out.println();
     }
-
+    */
+    
     String includeJarPattern =
         ".*/.*jsp-api-[^/]*\\.jar$|.*/.*jsp-[^/]*\\.jar$|.*/.*taglibs[^/]*\\.jar$";
 

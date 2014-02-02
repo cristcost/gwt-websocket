@@ -18,7 +18,8 @@
 	<name>Cristcost :: Test Web Socket</name>
 
 	<properties>
-		<jetty.version>7.6.8.v20121106</jetty.version>
+		<jetty.version>7.5.4.v20111024</jetty.version>
+		<jetty76.version>7.6.8.v20121106</jetty76.version>
 	</properties>
 
 	<dependencies>
@@ -129,7 +130,7 @@
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-jsp</artifactId>
-			<version>${jetty.version}</version>
+			<version>${jetty76.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<!--<dependency> <groupId>com.google.gwt</groupId> <artifactId>gwt-dev</artifactId> 
