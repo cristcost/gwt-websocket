@@ -10,7 +10,8 @@
 		<feature dependency="true">jetty</feature>
 		<feature dependency="true">war</feature>
 		
-		<bundle start-level="60">mvn:com.google.gwt/gwt-servlet/${gwt.version}</bundle>
+		<!--<bundle>mvn:com.google.gwt/gwt-servlet/${gwt.version}</bundle>-->
+		<bundle>mvn:org.apache.servicemix.bundles/org.apache.servicemix.bundles.gwt-servlet/2.6.0_1-SNAPSHOT</bundle>
 
 		<bundle>mvn:${project.groupId}/${project.artifactId}/${project.version}/war</bundle>
 	</feature>
