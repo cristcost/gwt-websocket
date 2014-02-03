@@ -15,7 +15,6 @@
 package net.cristcost.study.gwtws.client;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
@@ -25,7 +24,7 @@ public class WebSocketStudy implements EntryPoint {
 
   @Override
   public void onModuleLoad() {
-    RootPanel.get("application").add(new Label("This label is created with GWT"));
+    RootPanel.get("application").add(new WebSocketApp());
   }
 
 }

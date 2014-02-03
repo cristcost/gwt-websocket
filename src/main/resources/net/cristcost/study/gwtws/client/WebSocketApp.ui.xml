@@ -1,0 +1,26 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		
+	</ui:style>
+	<g:HTMLPanel>
+		<g:TextBox ui:field="textInputTextbox" />
+
+		<g:Button ui:field="sendButton">Send</g:Button>
+
+		<g:Button ui:field="connectButton">Connect</g:Button>
+
+		<g:Button ui:field="disconnectButton">Disconnect</g:Button>
+
+		<g:FlowPanel ui:field="messagesPanel" styleName="panel panel-default" />
+
+	<!-- <ul id="messageList" class="list-group"></ul> -->
+	<!-- <div class="panel panel-default"> -->
+	<!-- <div class="panel-heading">Panel heading without title</div> -->
+	<!-- <div class="panel-body"> -->
+	<!-- Panel content -->
+	<!-- </div> -->
+	<!-- </div> -->
+	</g:HTMLPanel>
+</ui:UiBinder> 
